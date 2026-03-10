@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Six Legs - Ant Colony Simulation</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="gameContainer" style="position:relative;width:100vw;height:100vh;">
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- SPLASH -->
+  <div id="splash">
+    <div class="antrow">🐜🐜🐜🐜🐜</div>
+    <h1>SIX LEGS</h1>
+    <div class="sub">A N T &nbsp; C O L O N Y &nbsp; S I M U L A T I O N</div>
+    <div class="tagline">Build your colony. Survive the seasons. Conquer the earth beneath your feet.</div>
+    <div class="splash-features">
+      <div class="splash-feature"><span class="feat-icon">⛏</span>Dig Tunnels</div>
+      <div class="splash-feature"><span class="feat-icon">⚔️</span>Fight Enemies</div>
+      <div class="splash-feature"><span class="feat-icon">🍎</span>Gather Food</div>
+      <div class="splash-feature"><span class="feat-icon">👑</span>Grow Colony</div>
+    </div>
+    <button class="startBtn" id="startBtn">BEGIN COLONY</button>
+  </div>
+
+  <!-- HUD -->
+  <div id="hud">
+    <div id="gameTitle">SIX<br>LEGS</div>
+    <div class="hud-stats">
+      <div class="chip">🍎 <span class="v" id="foodCount">0</span></div>
+      <div class="chip">👑 <span class="v" id="queenHP">100</span>%</div>
+      <div class="chip">🐜 <span class="v" id="totalAnts">0</span></div>
+      <div class="chip">☀️ <span class="v" id="dayNum">1</span></div>
+    </div>
+    <div id="seasonBadge">SPRING</div>
+  </div>
+
+  <!-- SIDE PANEL -->
+  <div id="sidePanel">
+    <h3>COLONY</h3>
+    <div class="srow"><span class="lbl">Workers</span><span class="cnt" id="wCount">0</span></div>
+    <div class="minib"><div id="wBar" style="background:#4a8a1e;width:0%"></div></div>
+    <div class="srow"><span class="lbl">Soldiers</span><span class="cnt" id="sCount">0</span></div>
+    <div class="minib"><div id="sBar" style="background:#cc2200;width:0%"></div></div>
+    <div class="srow"><span class="lbl">Nurses</span><span class="cnt" id="nCount">0</span></div>
+    <div class="minib"><div id="nBar" style="background:#4488cc;width:0%"></div></div>
+    <div class="srow"><span class="lbl">Larvae</span><span class="cnt" id="lCount">0</span></div>
+    <div class="minib"><div id="lBar" style="background:#cc8800;width:0%"></div></div>
+    <div class="divider"></div>
+    <div class="srow"><span class="lbl">Enemies</span><span class="cnt" id="eCount" style="color:#cc2200">0</span></div>
+
+    <div class="divider"></div>
+    <h3>BREED RATIO</h3>
+    <div class="role-row">
+      <button class="ratio-btn" id="wDn">-</button>
+      <span class="lbl">W</span>
+      <span class="cnt" id="ratioW">55%</span>
+      <button class="ratio-btn" id="wUp">+</button>
+    </div>
+    <div class="role-row">
+      <button class="ratio-btn" id="sDn">-</button>
+      <span class="lbl">S</span>
+      <span class="cnt" id="ratioS">20%</span>
+      <button class="ratio-btn" id="sUp">+</button>
+    </div>
+    <div class="role-row">
+      <button class="ratio-btn" id="nDn">-</button>
+      <span class="lbl">N</span>
+      <span class="cnt" id="ratioN">25%</span>
+      <button class="ratio-btn" id="nUp">+</button>
+    </div>
+  </div>
+
+  <!-- UPGRADE PANEL -->
+  <div id="upgradePanel">
+    <h3>UPGRADES</h3>
+    <div id="upgradeList"></div>
+  </div>
+
+  <!-- DIG MODE INDICATOR -->
+  <div id="digIndicator">⛏ DIG MODE — Click underground to excavate</div>
+
+  <!-- MINIMAP -->
+  <div id="minimap">
+    <canvas id="minimapCanvas" width="100" height="60"></canvas>
+  </div>
+
+  <!-- BOTTOM CONTROLS -->
+  <div id="controls">
+    <button class="btn" id="viewSurface">🌿 SURFACE</button>
+    <button class="btn on" id="viewUnder">⛏ TUNNELS</button>
+    <button class="btn" id="btnPher">👃 TRAILS</button>
+    <button class="btn" id="btnDig">🪨 DIG</button>
+    <button class="btn" id="btnUpgrade">⬆ UPGRADES</button>
+    <button class="btn" id="btnStats">📊 STATS</button>
+    <div class="sep"></div>
+    <button class="btn" id="btnPause">⏸</button>
+    <button class="btn" id="spd1">▶</button>
+    <button class="btn on" id="spd2">▶▶</button>
+    <button class="btn" id="spd3">▶▶▶</button>
+  </div>
+
+  <!-- TIP BANNER -->
+  <div id="tipBanner"></div>
+
+  <!-- EVENT BANNER -->
+  <div id="eventBanner">
+    <div class="eicon" id="eIcon">⚠️</div>
+    <h2 id="eTitle">EVENT</h2>
+    <p id="eDesc">Something happened.</p>
+    <div class="ok" id="dismissEvent">UNDERSTOOD</div>
+  </div>
+
+  <!-- STATS OVERLAY -->
+  <div id="statsOverlay">
+    <h3>COLONY STATISTICS</h3>
+    <div id="statsContent"></div>
+    <div class="ok" id="closeStats">CLOSE</div>
+  </div>
+
+  <!-- TOOLTIP -->
+  <div id="tooltip"></div>
+
+  <!-- GAME OVER -->
+  <div id="gameOver">
+    <div style="font-size:48px">💀</div>
+    <h2>COLONY LOST</h2>
+    <p id="goReason">Your queen has perished. The colony falls silent.</p>
+    <div id="goStats" class="final-stats"></div>
+    <button class="startBtn" id="restartBtn">NEW COLONY</button>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
