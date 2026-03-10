@@ -14,7 +14,7 @@ export function initCanvas() {
 
 function resize() {
   canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  canvas.height = document.documentElement.clientHeight;
   minimapCanvas.width = 100;
   minimapCanvas.height = 60;
 }
