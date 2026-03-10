@@ -28,7 +28,7 @@ export const surfaceY = () => Math.floor(H() * 0.35);
 export let G = {};
 export let view = 'underground';
 export let showPheromones = true;
-export let gameSpeed = 2;
+export let gameSpeed = 1;
 export let running = false;
 export let paused = false;
 export let tick = 0;
@@ -98,6 +98,10 @@ export function initGame() {
   G.nestY = surfaceY() + H() * 0.2 + Math.random() * H() * 0.15;
   G.queenX = G.nestX;
   G.queenY = G.nestY;
+  G.queenVX = 0.3;
+  G.queenVY = 0;
+  G.queenState = 'patrol_nest';
+  G.queenTimer = 0;
   G.enemyColony.x = W() * 0.6 + Math.random() * W() * 0.3;
   G.enemyColony.y = surfaceY() + H() * 0.15 + Math.random() * H() * 0.2;
 

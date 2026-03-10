@@ -1,6 +1,6 @@
 import { G, initCanvas, initGame, ctx, W, H, running, setRunning, paused, tick, incrementTick, gameSpeed } from './state.js';
 import { TYPE } from './constants.js';
-import { updateAnt, spawnAnt } from './ant.js';
+import { updateAnt, updateQueen, spawnAnt } from './ant.js';
 import { buildInitialTunnels, spawnFoodItem, updateLarvae } from './colony.js';
 import { updateEvents, updateDayCycle } from './events.js';
 import { evaporatePher } from './pheromones.js';
@@ -71,6 +71,7 @@ function gameLoop() {
   for (let s = 0; s < steps; s++) {
     for (const ant of [...G.ants]) updateAnt(ant);
     for (const ant of [...G.enemyColony.ants]) updateAnt(ant);
+    updateQueen();
 
     G.ants = G.ants.filter(a => a.hp > 0);
     G.enemyColony.ants = G.enemyColony.ants.filter(a => a.hp > 0);
